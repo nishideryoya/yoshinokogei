@@ -1,0 +1,218 @@
+/*
+Theme Name: child-yoshinokogei
+Author: bootstrap-basic4
+Version: 1.0
+*/
+
+/*
+Theme Name: 吉野工芸の里リニューアル
+Description: 彫刻の森美術館風のモダンデザイン
+Version: 1.1
+Author: Your Name
+*/
+
+body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; background-color: #fcfcfc; }
+h2 { border-left: 5px solid #8b4513; padding-left: 15px; margin-bottom: 30px; font-weight: bold; }
+.main-visual { background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; }
+.nav-link { transition: transform 0.2s ease; }
+.nav-link:hover { transform: translateY(-2px); }
+.bi { transition: opacity 0.2s; }
+.hover-up { transition: all 0.3s ease; }
+.hover-up:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+.object-fit-cover { object-fit: cover; }
+.border-dotted { border-bottom-style: dotted !important; }
+.hover-green:hover { color: #198754 !important; text-decoration: underline !important; }
+.ratio img { transition: opacity 0.3s ease; cursor: pointer; }
+.ratio img:hover { opacity: 0.8; }
+.card { border-radius: 8px; }
+
+/* マップ */
+.object-fit-cover { object-fit: cover; }
+.btn-outline-dark:hover { background-color: #333; color: #fff; }
+.swiper-pagination-bullet-active { background: #333 !important; }
+.facility-swiper .swiper-slide { height: auto; display: flex; }
+
+/* スライダーが起動する前でも4枚並ぶように保険をかける */
+.facility-swiper .swiper-wrapper { display: flex !important; }
+.facility-swiper .swiper-slide { width: calc(25% - 15px) !important; flex-shrink: 0; }
+@media (max-width: 767px) {
+    .facility-swiper .swiper-slide { width: 100% !important; }
+}
+
+/* 1行ずつ上書きしてください */
+.facility-swiper { overflow: hidden !important; }
+.facility-swiper .swiper-wrapper { display: flex !important; flex-wrap: nowrap !important; transition-timing-function: linear; }
+.facility-swiper .swiper-slide { width: 25% !important; flex-shrink: 0; padding: 0 10px; box-sizing: border-box; }
+@media (max-width: 991px) { .facility-swiper .swiper-slide { width: 50% !important; } }
+@media (max-width: 575px) { .facility-swiper .swiper-slide { width: 100% !important; } }
+
+.transition { transition: all 0.3s ease; }
+.hover-dark-btn:hover { background-color: #333 !important; color: #fff !important; border-color: #333 !important; }
+.hover-dark-btn:hover .text-warning { color: #ffc107 !important; }
+
+
+/* お知らせ詳細ページ */
+
+/* 記事本文内のスタイル調整 */
+.entry-content p { margin-bottom: 1.8rem; }
+.entry-content img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 2rem; }
+.entry-content h2 { font-weight: bold; border-left: 5px solid #333; padding-left: 15px; margin: 3rem 0 1.5rem; font-size: 1.5rem; }
+
+/* 前後ナビゲーションのリンク色 */
+.prev-post a, .next-post a { color: #333; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+.prev-post a:hover, .next-post a:hover { color: #666; }
+
+
+
+/* ご利用の案内 */
+/* 既存のスタイルに加えて、テーブルの調整など */
+table th { width: 140px; }
+.bi-p-square { color: #0d6efd; }
+.breadcrumb-item a { color: #666; text-decoration: none; }
+.text-primary-emphasis { color: #34495e !important; }
+
+
+header { position: static !important; width: 100%; background: #fff; }
+body { padding-top: 0 !important; }
+.sticky-top { top: 20px !important; }
+
+/* 体験教室・開催情報ページ */
+.page-hero h1 { border-left: none; padding-left: 0; }
+.taiken-card .taiken-meta li,
+.kouka-card { font-size: 0.875rem; }
+#taiken h2, #reserve h2 { border-left: 5px solid #8b4513; padding-left: 15px; }
+.heading-accent { border-left: 5px solid #8b4513; padding-left: 15px; }
+
+/* ページヒーロー（背景画像） */
+.page-hero {
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+}
+
+/* 全体マップ */
+.map-page h2 { border-left: none; padding-left: 0; }
+.map-intro__catch { letter-spacing: 0.08em; color: #333; }
+.map-intro__lead { font-size: 0.95rem; line-height: 1.8; }
+
+.village-map { max-width: 1100px; margin: 0 auto; }
+.village-map__canvas {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1000 / 620;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+.village-map__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+}
+
+.map-pin {
+    position: absolute;
+    z-index: 5;
+    width: 2.85rem;
+    height: 2.85rem;
+    margin: -1.425rem 0 0 -1.425rem;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.map-pin:hover,
+.map-pin:focus,
+.map-pin.is-active {
+    transform: scale(1.15);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    color: #fff;
+    outline: none;
+}
+.map-pin__icon { font-size: 1.15rem; line-height: 1; }
+
+.map-pin--coral { background: #e8839a; }
+.map-pin--purple { background: #9b59b6; }
+.map-pin--teal { background: #3d9a8b; }
+.map-pin--brown { background: #8b5a3c; }
+.map-pin--blue { background: #4a7fd4; }
+.map-pin--gold { background: #c9a227; }
+.map-pin--sky { background: #5f9ea0; }
+.map-pin--stone { background: #7a7a72; }
+.map-pin--orange { background: #e67e22; }
+.map-pin--wine { background: #7d4e6d; }
+
+.facility-card:hover { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+
+.map-spot-card {
+    display: block;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.map-spot-card:hover,
+.map-spot-card:focus,
+.map-spot-card.is-active {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    outline: none;
+}
+.map-spot-card.is-active .map-spot-card__label {
+    border-color: #198754 !important;
+    box-shadow: inset 0 0 0 2px #198754;
+}
+.map-spot-card__dot {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.85rem;
+}
+.map-spot-card__dot--lg {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.1rem;
+}
+.map-spot-card__dot.map-pin--coral,
+.map-pin--coral { background: #e8839a; }
+.map-spot-card__dot.map-pin--purple,
+.map-pin--purple { background: #9b59b6; }
+.map-spot-card__dot.map-pin--teal,
+.map-pin--teal { background: #3d9a8b; }
+.map-spot-card__dot.map-pin--brown,
+.map-pin--brown { background: #8b5a3c; }
+.map-spot-card__dot.map-pin--blue,
+.map-pin--blue { background: #4a7fd4; }
+.map-spot-card__dot.map-pin--gold,
+.map-pin--gold { background: #c9a227; }
+.map-spot-card__dot.map-pin--sky,
+.map-pin--sky { background: #5f9ea0; }
+.map-spot-card__dot.map-pin--stone,
+.map-pin--stone { background: #7a7a72; }
+.map-spot-card__dot.map-pin--orange,
+.map-pin--orange { background: #e67e22; }
+.map-spot-card__dot.map-pin--wine,
+.map-pin--wine { background: #7d4e6d; }
+
+@media (max-width: 575px) {
+    .map-pin {
+        width: 2.25rem;
+        height: 2.25rem;
+        margin: -1.125rem 0 0 -1.125rem;
+    }
+    .map-pin__icon { font-size: 0.95rem; }
+}

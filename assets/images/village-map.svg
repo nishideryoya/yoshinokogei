@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-label="	ùùnù ùùùù">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dfe8d4"/>
+      <stop offset="100%" stop-color="#e8dcc8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#3d3228" flood-opacity="0.25"/>
+    </filter>
+    <pattern id="grass" width="12" height="12" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="#6d9b52"/>
+      <circle cx="3" cy="4" r="2" fill="#5a8544"/>
+      <circle cx="9" cy="8" r="1.5" fill="#7aad62"/>
+    </pattern>
+  </defs>
+
+  <!-- ùùù -->
+  <rect width="1000" height="620" fill="url(#sky)"/>
+
+  <!-- hùnù -->
+  <ellipse cx="80" cy="120" rx="140" ry="100" fill="#5a8f4a" opacity="0.55"/>
+  <ellipse cx="920" cy="100" rx="130" ry="95" fill="#5a8f4a" opacity="0.5"/>
+  <ellipse cx="50" cy="400" rx="120" ry="130" fill="#5a8f4a" opacity="0.6"/>
+  <ellipse cx="950" cy="450" rx="110" ry="120" fill="#5a8f4a" opacity="0.55"/>
+  <ellipse cx="500" cy="30" rx="280" ry="70" fill="#6d9b52" opacity="0.35"/>
+
+  <!-- ` -->
+  <ellipse cx="830" cy="490" rx="105" ry="62" fill="#6eb5d8"/>
+  <ellipse cx="815" cy="478" rx="55" ry="28" fill="#8ecae6" opacity="0.6"/>
+
+  <!-- ùnI0 -->
+  <path d="M60 560 L120 420 Q200 350 320 380 Q450 320 580 360 Q720 300 860 340 L940 280 L960 600 L40 600 Z" fill="#c9d9a8" opacity="0.5"/>
+
+  <!-- ùùù	 -->
+  <path d="M90 560 Q180 480 260 420 Q340 360 420 340 Q520 300 620 320 Q720 280 820 250" fill="none" stroke="#d9c9a3" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M90 560 Q180 480 260 420 Q340 360 420 340 Q520 300 620 320 Q720 280 820 250" fill="none" stroke="#ebe0cc" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- ùù	 -->
+  <path d="M420 340 Q380 400 340 450 Q300 500 260 520" fill="none" stroke="#d9c9a3" stroke-width="26" stroke-linecap="round"/>
+  <path d="M420 340 Q380 400 340 450 Q300 500 260 520" fill="none" stroke="#ebe0cc" stroke-width="16" stroke-linecap="round"/>
+  <path d="M620 320 L680 380 L720 420" fill="none" stroke="#d9c9a3" stroke-width="22" stroke-linecap="round"/>
+  <path d="M620 320 L680 380 L720 420" fill="none" stroke="#ebe0cc" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- ùi: ù	MSù (pin: washi) -->
+  <g filter="url(#shadow)" id="bld-washi">
+    <rect x="115" y="268" width="100" height="72" rx="3" fill="#6b4c3b"/>
+    <polygon points="115,268 165,228 215,268" fill="#5a3d2e"/>
+    <rect x="145" y="295" width="22" height="35" fill="#4a3528"/>
+    <rect x="175" y="288" width="18" height="18" fill="#8eb4d9" opacity="0.7"/>
+  </g>
+
+  <!-- ùi: U:( (pin: tenji) -->
+  <g filter="url(#shadow)" id="bld-tenji">
+    <rect x="295" y="168" width="120" height="88" rx="3" fill="#5d4037"/>
+    <polygon points="295,168 355,125 415,168" fill="#4e342e"/>
+    <rect x="318" y="200" width="24" height="40" fill="#3e2723"/>
+    <rect x="360" y="195" width="40" height="28" fill="#8eb4d9" opacity="0.65"/>
+  </g>
+
+  <!-- ùi: Sù? (pin: taiken) -->
+  <g filter="url(#shadow)" id="bld-taiken">
+    <rect x="455" y="248" width="105" height="78" rx="3" fill="#6b4c3b"/>
+    <polygon points="455,248 507,210 559,248" fill="#5a3d2e"/>
+    <rect x="485" y="275" width="20" height="38" fill="#4a3528"/>
+    <rect x="520" y="268" width="28" height="22" fill="#8eb4d9" opacity="0.7"/>
+  </g>
+
+  <!-- ùi: J?ù (pin: dining) -->
+  <g filter="url(#shadow)" id="bld-dining">
+    <rect x="310" y="388" width="95" height="68" rx="3" fill="#7a5238"/>
+    <polygon points="310,388 357,352 405,388" fill="#6a4530"/>
+    <rect x="335" y="410" width="18" height="36" fill="#5a3828"/>
+    <rect x="368" y="405" width="30" height="22" fill="#8eb4d9" opacity="0.65"/>
+  </g>
+
+  <!-- ùi: ùùùù@ (pin: shop) -->
+  <g filter="url(#shadow)" id="bld-shop">
+    <rect x="575" y="178" width="98" height="76" rx="3" fill="#5d4037"/>
+    <polygon points="575,178 624,142 673,178" fill="#4e342e"/>
+    <rect x="598" y="205" width="22" height="38" fill="#3e2723"/>
+    <rect x="635" y="198" width="32" height="24" fill="#8eb4d9" opacity="0.65"/>
+  </g>
+
+  <!-- ùi: (ùùù (pin: mokko) -->
+  <g filter="url(#shadow)" id="bld-mokko">
+    <rect x="648" y="318" width="92" height="70" rx="3" fill="#6b4c3b"/>
+    <polygon points="648,318 694,282 740,318" fill="#5a3d2e"/>
+    <rect x="672" y="342" width="20" height="36" fill="#4a3528"/>
+    <rect x="705" y="335" width="26" height="20" fill="#8eb4d9" opacity="0.7"/>
+  </g>
+
+  <!-- k;ù4Kùùùù	 -->
+  <g id="bld-sculpture">
+    <ellipse cx="248" cy="468" rx="72" ry="48" fill="#b8c99a" opacity="0.7"/>
+    <ellipse cx="220" cy="455" rx="8" ry="14" fill="#888" opacity="0.5"/>
+    <ellipse cx="265" cy="478" rx="6" ry="12" fill="#888" opacity="0.5"/>
+    <ellipse cx="278" cy="450" rx="7" ry="11" fill="#888" opacity="0.5"/>
+    <path d="M230 440 L235 420 L240 440 Z" fill="#777" opacity="0.45"/>
+  </g>
+
+  <!-- ùi: UùÌ (pin: observatory) -->
+  <g filter="url(#shadow)" id="bld-history">
+    <rect x="430" y="158" width="88" height="68" rx="3" fill="#5d4037"/>
+    <polygon points="430,158 474,122 518,158" fill="#4e342e"/>
+    <rect x="452" y="185" width="20" height="32" fill="#3e2723"/>
+    <rect x="488" y="178" width="26" height="20" fill="#8eb4d9" opacity="0.65"/>
+  </g>
+  <g filter="url(#shadow)" id="bld-bbq">
+    <rect x="500" y="388" width="88" height="58" rx="3" fill="#7a5238"/>
+    <polygon points="500,388 544,358 588,388" fill="#6a4530"/>
+    <rect x="528" y="408" width="32" height="8" fill="#555" opacity="0.5"/>
+  </g>
+  <g filter="url(#shadow)" id="bld-observatory">
+    <rect x="748" y="108" width="88" height="58" rx="3" fill="#5d4037"/>
+    <polygon points="748,108 792,78 836,108" fill="#4e342e"/>
+    <rect x="778" y="88" width="28" height="12" fill="#8b7355" opacity="0.8"/>
+    <rect x="770" y="128" width="16" height="28" fill="#3e2723"/>
+  </g>
+
+  <!-- c(Yù( -->
+  <circle cx="200" cy="200" r="22" fill="#5a8f4a" opacity="0.85"/>
+  <circle cx="540" cy="180" r="18" fill="#5a8f4a" opacity="0.8"/>
+  <circle cx="700" cy="240" r="20" fill="#5a8f4a" opacity="0.85"/>
+  <circle cx="180" cy="520" r="24" fill="#5a8f4a" opacity="0.8"/>
+  <circle cx="880" cy="360" r="26" fill="#5a8f4a" opacity="0.75"/>
+  <circle cx="450" cy="520" r="20" fill="#5a8f4a" opacity="0.7"/>
+
+  <!-- cbeù -->
+  <g id="entrance">
+    <rect x="52" y="528" width="56" height="8" rx="2" fill="#8b7355"/>
+    <path d="M60 536 L80 520 L100 536" fill="none" stroke="#6b5344" stroke-width="3"/>
+    <text x="58" y="568" font-family="sans-serif" font-size="14" font-weight="bold" fill="#5c4a32">cbeù</text>
+  </g>
+</svg>
