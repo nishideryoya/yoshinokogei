@@ -11,7 +11,7 @@
 <header class="sticky-top bg-white shadow-sm">
     <div class="container d-flex justify-content-between align-items-center py-2">
         <a href="<?php echo home_url(); ?>" class="navbar-brand">
-            <h1 class="h4 mb-0 fw-bold text-dark">吉野工芸の里</h1>
+            <h1 class="h4 mb-0 fw-bold text-dark"><?php echo esc_html(yoshino_opt('site_name', '吉野工芸の里')); ?></h1>
         </a>
         <div class="d-flex align-items-center gap-3">
             <a href="<?php echo esc_url(yoshino_guide_page_url()); ?>" class="text-decoration-none text-secondary small d-flex align-items-center">
@@ -55,6 +55,6 @@
 </nav>
     
     <div class="bg-dark text-white text-center py-1 small fw-bold">
-        年中無休（火曜休館） | 10:00〜17:00
+        <?php echo esc_html(yoshino_opt('header_hours', '年中無休（火曜休館） | 10:00〜17:00')); ?>
     </div>
 </header>

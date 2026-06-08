@@ -2,52 +2,18 @@
 /**
  * Template Name: 体験教室
  */
+$page_id    = yoshino_get_page_id('taiken');
+$page_title = yoshino_get_page_title('taiken', '体験教室');
+
 get_header();
-
 $taiken_url = yoshino_taiken_page_url();
+$phone      = yoshino_opt('contact_phone', '076-255-5319');
 
-$sample_taiken = [
-    [
-        'title'    => '加賀の手漉き和紙体験',
-        'excerpt'  => '伝統的な加賀の手漉き和紙を、職人の指導のもと自分の手で漉いてみましょう。世界に一つだけの和紙をお持ち帰りいただけます。',
-        'price'    => '1,500円（材料費込）',
-        'duration' => '約60分',
-        'capacity' => '各回10名',
-        'target'   => '小学生以上',
-        'location' => '和紙漉き体験棟',
-        'image'    => 'https://placehold.jp/24/8b4513/ffffff/640x360.png?text=%E5%92%8C%E7%B4%99%E4%BD%93%E9%A8%93',
-    ],
-    [
-        'title'    => '木工ワークショップ',
-        'excerpt'  => '地元の木材を使い、コースターなどの小物づくりに挑戦。初心者の方でも安心してご参加いただけます。',
-        'price'    => '2,000円（材料費込）',
-        'duration' => '約90分',
-        'capacity' => '各回8名',
-        'target'   => '中学生以上',
-        'location' => '木工センター',
-        'image'    => 'https://placehold.jp/24/6b8e23/ffffff/640x360.png?text=%E6%9C%A8%E5%B7%A5%E4%BD%93%E9%A8%93',
-    ],
-    [
-        'title'    => '型染め体験',
-        'excerpt'  => '加賀友禅の型を使った染物体験。ハンカチやトートバッグに、自分だけの模様を染め上げます。',
-        'price'    => '1,800円（材料費込）',
-        'duration' => '約75分',
-        'capacity' => '各回12名',
-        'target'   => '全年齢（未就学児は保護者同伴）',
-        'location' => '体験工房',
-        'image'    => 'https://placehold.jp/24/4682b4/ffffff/640x360.png?text=%E6%9F%93%E7%89%A9%E4%BD%93%E9%A8%93',
-    ],
-    [
-        'title'    => '陶芸手びねり体験',
-        'excerpt'  => 'ろくろを使わず、手びねりで自由な形の器づくり。釉薬選びも楽しめる人気のプログラムです。',
-        'price'    => '2,500円（焼成・送料別）',
-        'duration' => '約90分',
-        'capacity' => '各回6名',
-        'target'   => '小学生以上',
-        'location' => '陶芸工房',
-        'image'    => 'https://placehold.jp/24/cd853f/ffffff/640x360.png?text=%E9%99%B6%E8%8A%B8%E4%BD%93%E9%A8%93',
-    ],
-];
+$reserve_notes = yoshino_repeater_or_default(yoshino_field('reserve_notes', $page_id), [
+    ['text' => 'キャンセルは開催日の3日前までにお電話にてご連絡ください。'],
+    ['text' => '定員に達し次第、受付を終了させていただきます。'],
+    ['text' => '団体（20名以上）のご予約はご利用の案内をご確認のうえお問い合わせください。'],
+]);
 
 $taiken_query = new WP_Query([
     'post_type'      => 'taiken',
@@ -58,9 +24,10 @@ $taiken_query = new WP_Query([
 ?>
 
 <?php get_template_part('template-parts/page', 'hero', [
-    'title'      => '体験教室',
-    'subtitle'   => '',
-    'image_key'  => 'hero-taiken',
+    'title'     => $page_title,
+    'subtitle'  => 'Workshop',
+    'image_key' => 'hero-taiken',
+    'post_id'   => $page_id,
 ]); ?>
 
 <main class="py-5">
@@ -68,8 +35,8 @@ $taiken_query = new WP_Query([
 
         <section class="mb-5 text-center">
             <a href="#reserve" class="btn btn-success btn-lg rounded-pill shadow px-5 py-3 fw-bold">
-                <span class="small d-block">ネットで予約がスムーズ！</span>
-                体験教室の申し込みはこちら
+                <span class="small d-block"><?php echo esc_html(yoshino_field('cta_sub', $page_id, 'ネットで予約がスムーズ！')); ?></span>
+                <?php echo esc_html(yoshino_field('cta_label', $page_id, '体験教室の申し込みはこちら')); ?>
             </a>
         </section>
 
@@ -79,7 +46,7 @@ $taiken_query = new WP_Query([
                     <h2 class="h4 fw-bold mb-1 border-0 ps-0">体験教室</h2>
                     <p class="text-secondary small mb-0">Workshop</p>
                 </div>
-                <p class="text-secondary small mb-0">職人の指導のもと、伝統工芸の技に触れる体験プログラムです。</p>
+                <p class="text-secondary small mb-0"><?php echo esc_html(yoshino_field('section_intro', $page_id, '職人の指導のもと、伝統工芸の技に触れる体験プログラムです。')); ?></p>
             </div>
 
             <div class="row g-4">
@@ -96,13 +63,13 @@ $taiken_query = new WP_Query([
                                     <ul class="list-unstyled small mb-3 taiken-meta">
                                         <?php
                                         $meta_items = [
-                                            ['icon' => 'bi-currency-yen', 'key' => 'taiken_price'],
-                                            ['icon' => 'bi-clock', 'key' => 'taiken_duration'],
-                                            ['icon' => 'bi-people', 'key' => 'taiken_capacity'],
-                                            ['icon' => 'bi-geo-alt', 'key' => 'taiken_location'],
+                                            ['icon' => 'bi-currency-yen', 'key' => 'price'],
+                                            ['icon' => 'bi-clock', 'key' => 'duration'],
+                                            ['icon' => 'bi-people', 'key' => 'capacity'],
+                                            ['icon' => 'bi-geo-alt', 'key' => 'location'],
                                         ];
                                         foreach ($meta_items as $item) :
-                                            $val = get_post_meta(get_the_ID(), $item['key'], true);
+                                            $val = yoshino_taiken_meta(get_the_ID(), $item['key']);
                                             if (!$val) continue;
                                         ?>
                                             <li class="mb-1"><i class="bi <?php echo esc_attr($item['icon']); ?> me-2 text-success"></i><?php echo esc_html($val); ?></li>
@@ -114,26 +81,9 @@ $taiken_query = new WP_Query([
                         </div>
                     <?php endwhile; wp_reset_postdata(); ?>
                 <?php else : ?>
-                    <?php foreach ($sample_taiken as $item) : ?>
-                        <div class="col-md-6 col-lg-4">
-                            <article class="card h-100 border-0 shadow-sm hover-up taiken-card">
-                                <div class="ratio ratio-16x9 bg-light">
-                                    <img src="<?php echo esc_url($item['image']); ?>" class="object-fit-cover" alt="<?php echo esc_attr($item['title']); ?>">
-                                </div>
-                                <div class="card-body p-4 d-flex flex-column">
-                                    <h3 class="h6 fw-bold mb-2"><?php echo esc_html($item['title']); ?></h3>
-                                    <p class="small text-secondary mb-3 flex-grow-1"><?php echo esc_html($item['excerpt']); ?></p>
-                                    <ul class="list-unstyled small mb-0 taiken-meta">
-                                        <li class="mb-1"><i class="bi bi-currency-yen me-2 text-success"></i><?php echo esc_html($item['price']); ?></li>
-                                        <li class="mb-1"><i class="bi bi-clock me-2 text-success"></i><?php echo esc_html($item['duration']); ?></li>
-                                        <li class="mb-1"><i class="bi bi-people me-2 text-success"></i><?php echo esc_html($item['capacity']); ?></li>
-                                        <li class="mb-1"><i class="bi bi-person me-2 text-success"></i><?php echo esc_html($item['target']); ?></li>
-                                        <li><i class="bi bi-geo-alt me-2 text-success"></i><?php echo esc_html($item['location']); ?></li>
-                                    </ul>
-                                </div>
-                            </article>
-                        </div>
-                    <?php endforeach; ?>
+                    <div class="col-12">
+                        <p class="text-center text-secondary py-4">体験教室は管理画面の「体験教室」から追加できます。</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </section>
@@ -142,8 +92,8 @@ $taiken_query = new WP_Query([
             <div class="card border-0 shadow-sm bg-light overflow-hidden">
                 <div class="row g-0 align-items-stretch">
                     <div class="col-lg-5 bg-success text-white p-4 p-md-5 d-flex flex-column justify-content-center">
-                        <h2 class="h5 fw-bold mb-3">体験教室のご予約</h2>
-                        <p class="small mb-0 opacity-75">事前予約制のプログラムがございます。お電話またはWebフォームよりお申し込みください。</p>
+                        <h2 class="h5 fw-bold mb-3"><?php echo esc_html(yoshino_field('reserve_title', $page_id, '体験教室のご予約')); ?></h2>
+                        <p class="small mb-0 opacity-75"><?php echo esc_html(yoshino_field('reserve_lead', $page_id, '事前予約制のプログラムがございます。お電話またはWebフォームよりお申し込みください。')); ?></p>
                     </div>
                     <div class="col-lg-7 p-4 p-md-5">
                         <div class="row g-4">
@@ -154,8 +104,8 @@ $taiken_query = new WP_Query([
                                     </div>
                                     <div>
                                         <h3 class="h6 fw-bold mb-1">お電話での予約</h3>
-                                        <p class="small text-secondary mb-1">9:00〜17:00（年中無休）</p>
-                                        <p class="fw-bold mb-0">0761-XX-XXXX</p>
+                                        <p class="small text-secondary mb-1"><?php echo esc_html(yoshino_field('reserve_phone_hours', $page_id, '10:00〜17:00（火曜休）')); ?></p>
+                                        <p class="fw-bold mb-0"><a href="tel:<?php echo esc_attr(preg_replace('/[^0-9]/', '', $phone)); ?>" class="text-decoration-none text-dark"><?php echo esc_html($phone); ?></a></p>
                                     </div>
                                 </div>
                             </div>
@@ -167,16 +117,17 @@ $taiken_query = new WP_Query([
                                     <div>
                                         <h3 class="h6 fw-bold mb-1">Web予約</h3>
                                         <p class="small text-secondary mb-2">24時間いつでもお申し込み可能</p>
-                                        <a href="#" class="btn btn-success btn-sm rounded-pill px-4">予約フォームへ</a>
+                                        <?php $web_url = yoshino_field('reserve_web_url', $page_id, '#'); ?>
+                                        <a href="<?php echo esc_url($web_url); ?>" class="btn btn-success btn-sm rounded-pill px-4"<?php echo $web_url === '#' ? '' : ' target="_blank" rel="noopener noreferrer"'; ?>>予約フォームへ</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr class="my-4">
                         <ul class="list-unstyled small text-secondary mb-0">
-                            <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i>キャンセルは開催日の3日前までにお電話にてご連絡ください。</li>
-                            <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i>定員に達し次第、受付を終了させていただきます。</li>
-                            <li><i class="bi bi-check-circle me-2 text-success"></i>団体（20名以上）のご予約は<a href="<?php echo esc_url(yoshino_guide_page_url()); ?>" class="text-decoration-none">ご利用の案内</a>をご確認のうえお問い合わせください。</li>
+                            <?php foreach ($reserve_notes as $note) : ?>
+                            <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i><?php echo esc_html($note['text'] ?? ''); ?></li>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>

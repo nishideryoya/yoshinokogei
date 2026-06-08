@@ -4,23 +4,24 @@
  */
 get_header();
 
-$spots    = yoshino_get_facilities();
-$map_url  = yoshino_map_page_url();
+$spots   = yoshino_get_facilities();
+$page_id    = yoshino_get_page_id('map');
+$page_title = yoshino_get_page_title('map', '全体マップ');
 ?>
 
 <?php get_template_part('template-parts/page', 'hero', [
-    'title'      => '全体マップ',
-    'subtitle'   => 'Village Map',
-    'image_key'  => 'hero-map',
+    'title'     => $page_title,
+    'subtitle'  => 'Village Map',
+    'image_key' => 'hero-map',
+    'post_id'   => $page_id,
 ]); ?>
 
 <main class="map-page">
     <section class="map-intro text-center py-5">
         <div class="container">
-            <p class="map-intro__catch display-6 fw-bold mb-3">見て、ふれて、創る。</p>
+            <p class="map-intro__catch display-6 fw-bold mb-3"><?php echo esc_html(yoshino_field('intro_catch', $page_id, '見て、ふれて、創る。')); ?></p>
             <p class="map-intro__lead text-secondary mb-0">
-                自然と調和した工芸の里、北陸の伝統工芸を体感。<br class="d-none d-md-inline">
-                マップのマークをタップすると、各施設の詳細ページへ移動します。
+                <?php echo nl2br(esc_html(yoshino_field('intro_lead', $page_id, "自然と調和した工芸の里、北陸の伝統工芸を体感。\nマップのマークをタップすると、各施設の詳細ページへ移動します。"))); ?>
             </p>
         </div>
     </section>

@@ -4,6 +4,8 @@
  */
 
 require_once get_stylesheet_directory() . '/inc/images.php';
+require_once get_stylesheet_directory() . '/inc/acf/setup.php';
+require_once get_stylesheet_directory() . '/inc/acf/helpers.php';
 
 function yoshino_enqueue_scripts() {
     // 1. Bootstrap (CSS & JS)
@@ -153,29 +155,12 @@ function yoshino_register_news_categories() {
 add_action('after_setup_theme', 'yoshino_register_news_categories');
 
 /**
- * 体験教室一覧ページ用のリライト（固定ページ未作成でも /taiken/ で表示）
+ * 固定ページ用リライト（pagename で正しいページクエリを読み込む）
  */
 function yoshino_register_taiken_rewrite() {
-    add_rewrite_rule('^taiken/?$', 'index.php?yoshino_taiken_page=1', 'top');
+    add_rewrite_rule('^taiken/?$', 'index.php?pagename=taiken', 'top');
 }
 add_action('init', 'yoshino_register_taiken_rewrite');
-
-function yoshino_taiken_query_vars($vars) {
-    $vars[] = 'yoshino_taiken_page';
-    return $vars;
-}
-add_filter('query_vars', 'yoshino_taiken_query_vars');
-
-function yoshino_taiken_template_include($template) {
-    if ((int) get_query_var('yoshino_taiken_page') === 1) {
-        $custom = get_stylesheet_directory() . '/page-taiken.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'yoshino_taiken_template_include');
 
 /**
  * 体験教室の固定ページを自動作成（管理画面に1回ログインで実行）
@@ -208,19 +193,176 @@ add_action('admin_init', 'yoshino_maybe_create_taiken_page');
 
 /**
  * リライトルールをフラッシュ（テーマ更新時）
+ * ※ news / map は WordPress 標準の固定ページURLを使う（独自リライトはクエリを壊す）
  */
 function yoshino_flush_rewrite_rules() {
     yoshino_register_taiken_rewrite();
-    yoshino_register_map_rewrite();
     yoshino_register_about_rewrite();
     yoshino_register_guide_rewrite();
-    yoshino_register_news_rewrite();
-    if (get_option('yoshino_rewrite_ver') !== '6') {
+    if (get_option('yoshino_rewrite_ver') !== '8') {
         flush_rewrite_rules(false);
-        update_option('yoshino_rewrite_ver', '6');
+        update_option('yoshino_rewrite_ver', '8');
     }
 }
 add_action('init', 'yoshino_flush_rewrite_rules', 99);
+
+/**
+ * 現在URLの先頭スラッグ（サブディレクトリ設置にも対応）
+ */
+function yoshino_current_request_slug() {
+    global $wp;
+    if (isset($wp->request) && $wp->request !== '') {
+        $parts = explode('/', trim((string) $wp->request, '/'));
+        return $parts[0] ?? '';
+    }
+
+    $path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    if (!$path) {
+        return '';
+    }
+    $path = trim($path, '/');
+    $home_path = trim((string) wp_parse_url(home_url('/'), PHP_URL_PATH), '/');
+    if ($home_path !== '' && str_starts_with($path, $home_path)) {
+        $path = trim(substr($path, strlen($home_path)), '/');
+    }
+    $parts = explode('/', $path);
+
+    return $parts[0] ?? '';
+}
+
+/**
+ * お知らせ・開催情報一覧のリクエストか
+ */
+function yoshino_is_news_archive_request() {
+    if (is_home() && !is_front_page()) {
+        return true;
+    }
+
+    $posts_page_id = (int) get_option('page_for_posts');
+    if ($posts_page_id && (is_page($posts_page_id) || is_page('news'))) {
+        return true;
+    }
+
+    if (yoshino_current_request_slug() === 'news') {
+        return true;
+    }
+
+    global $wp;
+    if (isset($wp->query_vars['pagename']) && $wp->query_vars['pagename'] === 'news') {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * トップ用固定ページを取得（なければ作成）
+ */
+function yoshino_get_or_create_top_page_id() {
+    foreach (['top', 'home'] as $slug) {
+        $page = get_page_by_path($slug);
+        if ($page && $page->post_status === 'publish') {
+            return (int) $page->ID;
+        }
+    }
+
+    $page_id = wp_insert_post([
+        'post_title'   => 'トップ',
+        'post_name'    => 'top',
+        'post_status'  => 'publish',
+        'post_type'    => 'page',
+        'post_content' => '',
+    ]);
+
+    return (is_wp_error($page_id) || !$page_id) ? 0 : (int) $page_id;
+}
+
+/**
+ * 表示設定の整合性（トップと投稿ページの取り違え防止）
+ */
+function yoshino_apply_reading_settings_fix() {
+    $news_page = get_page_by_path('news');
+    if (!$news_page || $news_page->post_status !== 'publish') {
+        return;
+    }
+
+    $news_id       = (int) $news_page->ID;
+    $posts_page_id = (int) get_option('page_for_posts');
+    $front_page_id = (int) get_option('page_on_front');
+
+    if (!$posts_page_id) {
+        update_option('page_for_posts', $news_id);
+        $posts_page_id = $news_id;
+    }
+
+    // 投稿ページがフロントに設定されていると /news/ が front-page.php になる
+    if ($posts_page_id && $front_page_id === $posts_page_id) {
+        $top_id = yoshino_get_or_create_top_page_id();
+        if ($top_id) {
+            update_option('page_on_front', $top_id);
+            update_option('show_on_front', 'page');
+        }
+    }
+}
+
+/**
+ * 各一覧・固定ページに正しいテンプレートを割り当て
+ */
+function yoshino_template_router($template) {
+    // /news/ は is_front_page() でも必ず一覧テンプレートへ
+    if (yoshino_is_news_archive_request()) {
+        $news_template = get_stylesheet_directory() . '/home.php';
+        if (file_exists($news_template)) {
+            return $news_template;
+        }
+    }
+
+    $slug = yoshino_current_request_slug();
+    if (is_page('map') || $slug === 'map') {
+        $map_template = get_stylesheet_directory() . '/page-map.php';
+        if (file_exists($map_template)) {
+            return $map_template;
+        }
+    }
+
+    return $template;
+}
+add_filter('template_include', 'yoshino_template_router', 99);
+
+/**
+ * 投稿ページ（/news/）が固定ページクエリになった場合に投稿一覧へ補正
+ */
+function yoshino_fix_posts_page_query($query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    $posts_page_id = (int) get_option('page_for_posts');
+    $news_page     = get_page_by_path('news');
+    if (!$posts_page_id && $news_page) {
+        $posts_page_id = (int) $news_page->ID;
+    }
+
+    $slug     = yoshino_current_request_slug();
+    $pagename = (string) $query->get('pagename');
+    $is_news  = ($slug === 'news' || $pagename === 'news')
+        || ($posts_page_id && (int) $query->get('page_id') === $posts_page_id);
+
+    if (!$is_news) {
+        return;
+    }
+
+    if ($query->is_page() && !$query->is_home()) {
+        $query->set('page_id', '');
+        $query->set('pagename', '');
+        $query->set('post_type', 'post');
+        $query->set('posts_per_page', get_option('posts_per_page'));
+        $query->is_page     = false;
+        $query->is_singular = false;
+        $query->is_home     = true;
+    }
+}
+add_action('pre_get_posts', 'yoshino_fix_posts_page_query');
 
 /**
  * 体験教室ページのURL
@@ -257,30 +399,6 @@ function yoshino_news_archive_url() {
     return trailingslashit(home_url('/news'));
 }
 
-/**
- * お知らせ一覧ページ用リライト
- */
-function yoshino_register_news_rewrite() {
-    add_rewrite_rule('^news/?$', 'index.php?yoshino_news_page=1', 'top');
-}
-
-function yoshino_news_query_vars($vars) {
-    $vars[] = 'yoshino_news_page';
-    return $vars;
-}
-add_filter('query_vars', 'yoshino_news_query_vars');
-
-function yoshino_news_template_include($template) {
-    if ((int) get_query_var('yoshino_news_page') === 1) {
-        $custom = get_stylesheet_directory() . '/home.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'yoshino_news_template_include');
-
 function yoshino_maybe_create_news_page() {
     if (get_option('yoshino_news_page_ready')) {
         return;
@@ -300,7 +418,6 @@ function yoshino_maybe_create_news_page() {
         ]);
         if ($page_id && !is_wp_error($page_id)) {
             update_option('page_for_posts', $page_id);
-            update_post_meta($page_id, '_wp_page_template', 'home.php');
         }
     } elseif (!get_option('page_for_posts')) {
         update_option('page_for_posts', $page->ID);
@@ -309,6 +426,25 @@ function yoshino_maybe_create_news_page() {
     update_option('yoshino_news_page_ready', 1);
 }
 add_action('init', 'yoshino_maybe_create_news_page', 12);
+
+/**
+ * 表示設定の整合性を確保（管理画面ログイン時・初回フロント表示時）
+ */
+function yoshino_ensure_reading_settings() {
+    if (get_option('yoshino_reading_settings_ver') === '2') {
+        return;
+    }
+
+    if (is_admin() && !current_user_can('manage_options')) {
+        return;
+    }
+
+    yoshino_apply_reading_settings_fix();
+    update_option('yoshino_reading_settings_ver', '2');
+    delete_option('yoshino_reading_settings_ready');
+}
+add_action('init', 'yoshino_ensure_reading_settings', 5);
+add_action('admin_init', 'yoshino_ensure_reading_settings');
 
 /**
  * マップ施設（スポット）のカスタム投稿タイプ
@@ -565,29 +701,8 @@ function yoshino_ensure_map_spots() {
 add_action('init', 'yoshino_ensure_map_spots', 15);
 
 /**
- * マップ一覧ページ用のリライト
+ * マップページのURL
  */
-function yoshino_register_map_rewrite() {
-    add_rewrite_rule('^map/?$', 'index.php?yoshino_map_page=1', 'top');
-}
-
-function yoshino_map_query_vars($vars) {
-    $vars[] = 'yoshino_map_page';
-    return $vars;
-}
-add_filter('query_vars', 'yoshino_map_query_vars');
-
-function yoshino_map_template_include($template) {
-    if ((int) get_query_var('yoshino_map_page') === 1) {
-        $custom = get_stylesheet_directory() . '/page-map.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'yoshino_map_template_include');
-
 function yoshino_maybe_create_map_page() {
     if (!is_admin() || !current_user_can('edit_pages')) {
         return;
@@ -614,10 +729,7 @@ function yoshino_maybe_create_map_page() {
 add_action('admin_init', 'yoshino_maybe_create_map_page');
 
 function yoshino_is_map_page() {
-    if ((int) get_query_var('yoshino_map_page') === 1) {
-        return true;
-    }
-    return is_page('map') || is_page_template('page-map.php');
+    return is_page('map') || is_page_template('page-map.php') || yoshino_current_request_slug() === 'map';
 }
 
 function yoshino_map_page_url() {
@@ -656,8 +768,8 @@ function yoshino_get_map_spots() {
             $query->the_post();
             $id   = get_the_ID();
             $slug = get_post_field('post_name', $id);
-            $raw_x = get_post_meta($id, 'map_x', true);
-            $raw_y = get_post_meta($id, 'map_y', true);
+            $raw_x = yoshino_map_meta($id, 'map_x');
+            $raw_y = yoshino_map_meta($id, 'map_y');
             $coords = yoshino_map_spot_pin_coords($id, $slug, $raw_x ?: 50, $raw_y ?: 50);
             $spots[] = [
                 'id'      => $id,
@@ -670,8 +782,8 @@ function yoshino_get_map_spots() {
                     ?: '',
                 'x'       => $coords['x'],
                 'y'       => $coords['y'],
-                'color'   => get_post_meta($id, 'map_color', true) ?: 'coral',
-                'icon'    => get_post_meta($id, 'map_icon', true) ?: 'geo-alt',
+                'color'   => yoshino_map_meta($id, 'map_color') ?: 'coral',
+                'icon'    => yoshino_map_meta($id, 'map_icon') ?: 'geo-alt',
             ];
         }
         wp_reset_postdata();
@@ -701,25 +813,8 @@ function yoshino_get_map_spots() {
  * 「吉野工芸の里について」ページ用リライト
  */
 function yoshino_register_about_rewrite() {
-    add_rewrite_rule('^about/?$', 'index.php?yoshino_about_page=1', 'top');
+    add_rewrite_rule('^about/?$', 'index.php?pagename=about', 'top');
 }
-
-function yoshino_about_query_vars($vars) {
-    $vars[] = 'yoshino_about_page';
-    return $vars;
-}
-add_filter('query_vars', 'yoshino_about_query_vars');
-
-function yoshino_about_template_include($template) {
-    if ((int) get_query_var('yoshino_about_page') === 1) {
-        $custom = get_stylesheet_directory() . '/page-about.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'yoshino_about_template_include');
 
 /**
  * 「吉野工芸の里について」ページ
@@ -775,25 +870,8 @@ function yoshino_guide_page_url() {
 }
 
 function yoshino_register_guide_rewrite() {
-    add_rewrite_rule('^guide/?$', 'index.php?yoshino_guide_page=1', 'top');
+    add_rewrite_rule('^guide/?$', 'index.php?pagename=guide', 'top');
 }
-
-function yoshino_guide_query_vars($vars) {
-    $vars[] = 'yoshino_guide_page';
-    return $vars;
-}
-add_filter('query_vars', 'yoshino_guide_query_vars');
-
-function yoshino_guide_template_include($template) {
-    if ((int) get_query_var('yoshino_guide_page') === 1) {
-        $custom = get_stylesheet_directory() . '/page-guide.php';
-        if (file_exists($custom)) {
-            return $custom;
-        }
-    }
-    return $template;
-}
-add_filter('template_include', 'yoshino_guide_template_include');
 
 function yoshino_maybe_create_guide_page() {
     if (!is_admin() || !current_user_can('edit_pages')) {

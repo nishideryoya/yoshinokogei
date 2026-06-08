@@ -1,15 +1,17 @@
 <?php
 /**
  * お知らせ一覧（News & Events）
- * 設定 > 表示設定 で「投稿ページ」に指定した固定ページ、またはブログトップ
  */
 get_header();
+
+$posts_page_id = (int) get_option('page_for_posts');
 ?>
 
 <?php get_template_part('template-parts/page', 'hero', [
     'title'      => 'News & Events',
     'subtitle'   => 'お知らせ・開催情報',
     'image_key'  => 'hero-news',
+    'post_id'    => $posts_page_id,
 ]); ?>
 
 <main class="py-5">

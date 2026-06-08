@@ -12,7 +12,8 @@ function yoshino_theme_images() {
 
     $images = [
         'default'       => 'https://placehold.jp/24/cccccc/ffffff/800x500.png?text=Photo',
-        'hero-main'     => 'https://placehold.jp/24/2d5016/ffffff/1920x800.png',
+        'hero-main'     => get_stylesheet_directory_uri() . '/assets/images/hero-main.jpg',
+        'about-main'    => get_stylesheet_directory_uri() . '/assets/images/about-main.jpg',
         'hero-news'     => 'https://placehold.jp/24/4a5568/ffffff/1200x420.png',
         'hero-about'    => 'https://placehold.jp/24/5a8f4a/ffffff/1200x420.png',
         'hero-guide'    => 'https://placehold.jp/24/6b5344/ffffff/1200x420.png',
@@ -23,9 +24,9 @@ function yoshino_theme_images() {
         'about-craft'   => 'https://placehold.jp/24/8b4513/ffffff/800x500.png?text=%E5%B7%A5%E8%8A%B8%E4%BD%93%E9%A8%93',
         'about-salon'   => 'https://placehold.jp/24/7a5238/ffffff/800x500.png?text=%E9%B4%89%E8%8D%89',
         'taiken-default'=> 'https://placehold.jp/24/4682b4/ffffff/640x360.png?text=%E4%BD%93%E9%A8%93',
-        'news-1'        => 'https://placehold.jp/24/4a7fd4/ffffff/640x360.png?text=Event',
-        'news-2'        => 'https://placehold.jp/24/3d9a8b/ffffff/640x360.png?text=Info',
-        'news-3'        => 'https://placehold.jp/24/9b59b6/ffffff/640x360.png?text=Notice',
+        'news-1'        => get_stylesheet_directory_uri() . '/assets/images/news-1.jpg',
+        'news-2'        => get_stylesheet_directory_uri() . '/assets/images/news-2.jpg',
+        'news-3'        => get_stylesheet_directory_uri() . '/assets/images/news-3.jpg',
         'sakka-default' => 'https://placehold.jp/24/6a5acd/ffffff/400x400.png?text=Artist',
         'sakka-work'    => 'https://placehold.jp/24/8b4513/ffffff/400x400.png?text=Work',
         'instagram-1'   => 'https://placehold.jp/24/e8839a/ffffff/400x400.png?text=IG+1',
@@ -79,7 +80,7 @@ function yoshino_taiken_card_image($post_id = 0) {
     if ($post_id && has_post_thumbnail($post_id)) {
         return get_the_post_thumbnail_url($post_id, 'medium_large');
     }
-    $keys = ['facility-taiken-kobo', 'facility-washi-taiken', 'facility-tenji-kan', 'taiken-default'];
+    $keys  = ['facility-taiken-kobo', 'facility-washi-taiken', 'facility-tenji-kan', 'taiken-default'];
     $index = $post_id ? ((int) $post_id % count($keys)) : 0;
     return yoshino_img($keys[$index]);
 }
@@ -91,7 +92,7 @@ function yoshino_sakka_avatar_image($post_id = 0) {
     if ($post_id && has_post_thumbnail($post_id)) {
         return get_the_post_thumbnail_url($post_id, 'medium');
     }
-    $keys = ['sakka-default', 'facility-tenji-kan', 'facility-shop', 'facility-mokko-center'];
+    $keys  = ['sakka-default', 'facility-tenji-kan', 'facility-shop', 'facility-mokko-center'];
     $index = $post_id ? ((int) $post_id % count($keys)) : 0;
     return yoshino_img($keys[$index]);
 }
@@ -103,7 +104,7 @@ function yoshino_news_card_image($post_id = 0) {
     if ($post_id && has_post_thumbnail($post_id)) {
         return get_the_post_thumbnail_url($post_id, 'medium_large');
     }
-    $keys = ['news-1', 'news-2', 'news-3'];
+    $keys  = ['news-1', 'news-2', 'news-3'];
     $index = $post_id ? ((int) $post_id % 3) : 0;
     return yoshino_img($keys[$index]);
 }

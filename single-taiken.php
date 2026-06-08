@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <?php while (have_posts()) : the_post(); ?>
-<section class="page-hero py-4 text-white text-center" style="<?php echo esc_attr(yoshino_hero_bg_style('hero-taiken')); ?>">
+<section class="page-hero py-4 text-white text-center" style="<?php echo esc_attr(yoshino_hero_image_style(get_the_ID(), 'hero-taiken')); ?>">
     <div class="container py-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center small mb-3">
@@ -38,7 +38,7 @@
                                 'location' => ['label' => '場所', 'icon' => 'bi-geo-alt'],
                             ];
                             foreach ($details as $key => $detail) :
-                                $val = get_post_meta(get_the_ID(), 'taiken_' . $key, true);
+                                $val = yoshino_taiken_meta(get_the_ID(), $key);
                                 if (!$val) continue;
                             ?>
                                 <dt class="col-4 fw-bold text-secondary"><?php echo esc_html($detail['label']); ?></dt>

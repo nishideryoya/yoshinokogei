@@ -15,7 +15,7 @@
                         <img src="<?php echo esc_url(yoshino_sakka_avatar_image(get_the_ID())); ?>" class="rounded-circle object-fit-cover w-100 h-100" alt="<?php the_title_attribute(); ?>" loading="lazy">
                     </div>
                     <h3 class="h6 fw-bold"><?php the_title(); ?></h3>
-                    <p class="small text-secondary mb-3"><?php echo get_post_meta(get_the_ID(), 'field_name', true); // ジャンル名など ?></p>
+                    <p class="small text-secondary mb-3"><?php echo esc_html(yoshino_field('sakka_genre', get_the_ID(), '工芸作家')); ?></p>
                     <a href="<?php the_permalink(); ?>" class="stretched-link"></a>
                 </div>
             </div>
