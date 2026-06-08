@@ -222,7 +222,7 @@ function yoshino_current_request_slug() {
     }
     $path = trim($path, '/');
     $home_path = trim((string) wp_parse_url(home_url('/'), PHP_URL_PATH), '/');
-    if ($home_path !== '' && str_starts_with($path, $home_path)) {
+    if ($home_path !== '' && strpos($path, $home_path) === 0) {
         $path = trim(substr($path, strlen($home_path)), '/');
     }
     $parts = explode('/', $path);
