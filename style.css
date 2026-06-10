@@ -1,14 +1,10 @@
 /*
-Theme Name: child-yoshinokogei
-Author: bootstrap-basic4
-Version: 1.0
-*/
-
-/*
 Theme Name: 吉野工芸の里リニューアル
-Description: 彫刻の森美術館風のモダンデザイン
-Version: 1.1
-Author: Your Name
+Theme URI: https://github.com/nishideryoya/yoshinokogei
+Description: 吉野工芸の里 公式サイト用テーマ
+Version: 1.2
+Author: nishideryoya
+Text Domain: child-yoshinokogei
 */
 
 body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; background-color: #fcfcfc; }

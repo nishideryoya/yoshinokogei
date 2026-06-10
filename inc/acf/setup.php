@@ -73,6 +73,10 @@ function yoshino_acf_bootstrap() {
     if (!yoshino_acf_active()) {
         return;
     }
-    require_once get_stylesheet_directory() . '/inc/acf/fields.php';
+    $fields = get_stylesheet_directory() . '/inc/acf/fields.php';
+    if (!is_readable($fields)) {
+        return;
+    }
+    require_once $fields;
 }
 add_action('acf/init', 'yoshino_acf_bootstrap');

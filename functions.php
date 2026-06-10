@@ -4,8 +4,15 @@
  */
 
 require_once get_stylesheet_directory() . '/inc/images.php';
-require_once get_stylesheet_directory() . '/inc/acf/setup.php';
-require_once get_stylesheet_directory() . '/inc/acf/helpers.php';
+
+$acf_setup = get_stylesheet_directory() . '/inc/acf/setup.php';
+$acf_helpers = get_stylesheet_directory() . '/inc/acf/helpers.php';
+if (is_readable($acf_setup)) {
+    require_once $acf_setup;
+}
+if (is_readable($acf_helpers)) {
+    require_once $acf_helpers;
+}
 
 function yoshino_enqueue_scripts() {
     // 1. Bootstrap (CSS & JS)
