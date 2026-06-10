@@ -85,6 +85,18 @@ body { padding-top: 0 !important; }
     display: flex;
     align-items: center;
 }
+.page-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.page-hero__overlay {
+    z-index: 1;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));
+}
+.page-hero .container {
+    z-index: 2;
+}
 
 /* 全体マップ */
 .map-page h2 { border-left: none; padding-left: 0; }

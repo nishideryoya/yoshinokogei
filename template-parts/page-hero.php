@@ -23,10 +23,18 @@ if ($post_id && yoshino_acf_active()) {
     }
 }
 
-$style = yoshino_hero_image_style($post_id, $image_key);
+$img_url = yoshino_page_hero_url($post_id, $image_key);
 ?>
-<section class="page-hero py-5 text-white text-center" style="<?php echo esc_attr($style); ?>">
-    <div class="container py-4">
+<section class="page-hero position-relative overflow-hidden py-5 text-white text-center">
+    <img
+        src="<?php echo esc_url($img_url); ?>"
+        alt=""
+        class="page-hero__bg w-100 h-100 object-fit-cover"
+        decoding="async"
+        aria-hidden="true"
+    >
+    <div class="page-hero__overlay position-absolute top-0 start-0 w-100 h-100" aria-hidden="true"></div>
+    <div class="container py-4 position-relative">
         <?php if ($title) : ?>
             <h1 class="display-5 fw-bold"><?php echo esc_html($title); ?></h1>
         <?php endif; ?>

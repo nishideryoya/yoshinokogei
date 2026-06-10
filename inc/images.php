@@ -10,23 +10,25 @@ function yoshino_theme_images() {
         return $images;
     }
 
+    $uri = get_stylesheet_directory_uri() . '/assets/images/';
+
     $images = [
         'default'       => 'https://placehold.jp/24/cccccc/ffffff/800x500.png?text=Photo',
-        'hero-main'     => get_stylesheet_directory_uri() . '/assets/images/hero-main.jpg',
-        'about-main'    => get_stylesheet_directory_uri() . '/assets/images/about-main.jpg',
-        'hero-news'     => 'https://placehold.jp/24/4a5568/ffffff/1200x420.png',
-        'hero-about'    => 'https://placehold.jp/24/5a8f4a/ffffff/1200x420.png',
-        'hero-guide'    => 'https://placehold.jp/24/6b5344/ffffff/1200x420.png',
-        'hero-taiken'   => 'https://placehold.jp/24/4682b4/ffffff/1200x420.png',
-        'hero-map'      => 'https://placehold.jp/24/8b7355/ffffff/1200x420.png',
-        'hero-sakka'    => 'https://placehold.jp/24/6a5acd/ffffff/1200x420.png',
+        'hero-main'     => $uri . 'hero-main.jpg',
+        'about-main'    => $uri . 'about-main.jpg',
+        'hero-news'     => $uri . 'hero-news.jpg',
+        'hero-about'    => $uri . 'hero-about.jpg',
+        'hero-guide'    => $uri . 'hero-guide.jpg',
+        'hero-taiken'   => $uri . 'hero-taiken.jpg',
+        'hero-map'      => $uri . 'hero-map.jpg',
+        'hero-sakka'    => $uri . 'hero-sakka.jpg',
         'about-nature'  => 'https://placehold.jp/24/5a8f4a/ffffff/800x600.png?text=%E7%99%BD%E5%B1%B1%E8%87%A8',
         'about-craft'   => 'https://placehold.jp/24/8b4513/ffffff/800x500.png?text=%E5%B7%A5%E8%8A%B8%E4%BD%93%E9%A8%93',
         'about-salon'   => 'https://placehold.jp/24/7a5238/ffffff/800x500.png?text=%E9%B4%89%E8%8D%89',
         'taiken-default'=> 'https://placehold.jp/24/4682b4/ffffff/640x360.png?text=%E4%BD%93%E9%A8%93',
-        'news-1'        => get_stylesheet_directory_uri() . '/assets/images/news-1.jpg',
-        'news-2'        => get_stylesheet_directory_uri() . '/assets/images/news-2.jpg',
-        'news-3'        => get_stylesheet_directory_uri() . '/assets/images/news-3.jpg',
+        'news-1'        => $uri . 'news-1.jpg',
+        'news-2'        => $uri . 'news-2.jpg',
+        'news-3'        => $uri . 'news-3.jpg',
         'sakka-default' => 'https://placehold.jp/24/6a5acd/ffffff/400x400.png?text=Artist',
         'sakka-work'    => 'https://placehold.jp/24/8b4513/ffffff/400x400.png?text=Work',
         'instagram-1'   => 'https://placehold.jp/24/e8839a/ffffff/400x400.png?text=IG+1',

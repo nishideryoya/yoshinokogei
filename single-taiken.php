@@ -1,8 +1,10 @@
 <?php get_header(); ?>
 
 <?php while (have_posts()) : the_post(); ?>
-<section class="page-hero py-4 text-white text-center" style="<?php echo esc_attr(yoshino_hero_image_style(get_the_ID(), 'hero-taiken')); ?>">
-    <div class="container py-3">
+<section class="page-hero position-relative overflow-hidden py-4 text-white text-center">
+    <img src="<?php echo esc_url(yoshino_page_hero_url(get_the_ID(), 'hero-taiken')); ?>" alt="" class="page-hero__bg w-100 h-100 object-fit-cover" decoding="async" aria-hidden="true">
+    <div class="page-hero__overlay position-absolute top-0 start-0 w-100 h-100" aria-hidden="true"></div>
+    <div class="container py-3 position-relative">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb justify-content-center small mb-3">
                 <li class="breadcrumb-item"><a href="<?php echo esc_url(yoshino_taiken_page_url()); ?>" class="text-white-50 text-decoration-none">体験教室</a></li>

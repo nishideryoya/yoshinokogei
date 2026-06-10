@@ -78,15 +78,16 @@ function yoshino_image_url($field_value, $fallback = '') {
     return $fallback;
 }
 
-function yoshino_hero_image_style($post_id = 0, $image_key = 'hero-main') {
+function yoshino_page_hero_url($post_id = 0, $image_key = 'hero-main') {
     $fallback = yoshino_img($image_key);
     if ($post_id && yoshino_acf_active()) {
-        $img = get_field('hero_image', $post_id);
-        $url = yoshino_image_url($img, $fallback);
-    } else {
-        $url = $fallback;
+        return yoshino_image_url(get_field('hero_image', $post_id), $fallback);
     }
-    $url = esc_url($url);
+    return $fallback;
+}
+
+function yoshino_hero_image_style($post_id = 0, $image_key = 'hero-main') {
+    $url = esc_url(yoshino_page_hero_url($post_id, $image_key));
     return "background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('{$url}') no-repeat center/cover;";
 }
 

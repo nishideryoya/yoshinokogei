@@ -4,12 +4,17 @@
     $color = get_post_meta(get_the_ID(), 'map_color', true) ?: 'coral';
     $icon  = get_post_meta(get_the_ID(), 'map_icon', true) ?: 'geo-alt';
     $slug  = get_post_field('post_name', get_the_ID());
+    $hero_img = has_post_thumbnail()
+        ? get_the_post_thumbnail_url(get_the_ID(), 'large')
+        : yoshino_page_hero_url(0, 'hero-map');
     $spot_img = has_post_thumbnail()
         ? get_the_post_thumbnail_url(get_the_ID(), 'large')
         : yoshino_img('facility-' . $slug, 'default');
 ?>
-<section class="page-hero py-4 text-white text-center" style="<?php echo esc_attr(yoshino_hero_bg_style('hero-map')); ?>">
-    <div class="container py-3">
+<section class="page-hero position-relative overflow-hidden py-4 text-white text-center">
+    <img src="<?php echo esc_url($hero_img); ?>" alt="" class="page-hero__bg w-100 h-100 object-fit-cover" decoding="async" aria-hidden="true">
+    <div class="page-hero__overlay position-absolute top-0 start-0 w-100 h-100" aria-hidden="true"></div>
+    <div class="container py-3 position-relative">
         <h1 class="h3 fw-bold mb-0"><?php the_title(); ?></h1>
     </div>
 </section>
